@@ -2,9 +2,6 @@
 
 (provide (all-defined-out))
 
-(define (is? type)
-    (lambda (e) (and (list? e) (eq? (car e) type))))
-
 (define (substitute arg val expr)
   (cond ((and (symbol? expr) (symbol=? arg expr)) val)
         ((empty? expr) empty)

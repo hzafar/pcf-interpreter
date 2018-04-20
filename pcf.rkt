@@ -9,30 +9,24 @@
 
 ; 19.2a-c
 (define (val? e)
-  (or (lam? e)
-      (eq? z e)
-      (and (succ? e) (val? (cadr e)))))
+  (match e
+    [`(lam ,e ,b) #t]
+    ['z #t]
+    [`(succ ,(? val? v)) #t]
+    [_ #f]))
 
 (define (step e)
-  (cond ((val? e) e)
-        ((succ? e) (succ ,(step (pred e)))) ; 19.3a
-        ((ifz? e)
-         (cond ((eq? (ifz-expr e) z) (ifz-e0 e)) ; 19.3c
-               ((and (val? (ifz-expr e)) (succ? (ifz-expr e)))
-                (substitute (lam-arg (ifz-e1 e)) (pred (ifz-expr e)) (lam-body (ifz-e1 e)))) ; 19.3d
-               (else (ifz ,(step (ifz-expr e)) ,(ifz-e0 e) ,(ifz-e1 e))))); 19.3b
-        ((ap? e)
-         (cond ((val? (ap-e1 e))
-                (if (val? (ap-e2 e))
-                    (substitute (lam-arg (ap-e1 e)) (ap-e2 e) (lam-body (ap-e1 e))) ; 19.3g
-                    (ap ,(ap-e1 e) ,(step (ap-e2 e))))) ; 19.3f
-               (else (ap ,(step (ap-e1 e)) ,(ap-e2 e))))) ; 19.3e
-        ((fix? e)
-         (substitute (lam-arg (fix-expr e))
-                     (fix ,(lam ,(lam-arg (fix-expr e))
-                                ,(rename-lam-var (lam-body (fix-expr e)))))
-                     (lam-body (fix-expr e)))) ; 19.3h
-        (else (error "Ill-formed expression: " e))))
+  (match e
+    [(? val? v) v]
+    [`(succ ,e) `(succ ,(step e))]
+    [`(ifz z ,e0 ,e1) e0]
+    [`(ifz (succ ,(? val? v)) ,e0 (lam ,x ,b)) (substitute x v b)]
+    [`(ifz ,e ,e0 ,es) `(ifz ,(step e) ,e0 ,es)]
+    [`(ap (lam ,x ,b) ,(? val? arg)) (substitute x arg b)]
+    [`(ap ,(? val? fn) ,e) `(ap ,fn ,(step e))]
+    [`(ap ,e1 ,e2) `(ap ,(step e1) ,e2)]
+    [`(fix (lam ,x ,b)) (substitute x `(fix (lam ,x ,(rename-lam-var b))) b)]
+    [_ (error "Ill-formed expression: " e)]))
 
 (define (evaluate e)
     (if (val? e) e
