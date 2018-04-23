@@ -2,7 +2,7 @@
 
 (require
   "../parser.rkt"
-  "../pcf.rkt"
+  "../pcf-dynamics.rkt"
   rackunit
   rackunit/log)
 

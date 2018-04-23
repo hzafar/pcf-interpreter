@@ -9,6 +9,7 @@
 
 (provide parse)
 
+;; Parses syntax from the book into a quoted list representation.
 ;; Throws away type info atm.
 
 (define type-arr/p (syntax/p (do (token/p 'FNARROW) [t <- type/p] (pure t))))
@@ -17,6 +18,7 @@
     (syntax/p (do [t1 <- type-nat/p]
                   [ts <- (many*/p type-arr/p)]
                   (pure (list* t1 ts)))))
+
 
 (define identifier/p (syntax/p (token/p 'IDENTIFIER)))
 (define zero/p (syntax/p (do (token/p 'ZERO) (pure 'z))))
@@ -57,6 +59,7 @@
       (token/p 'CLOSEPAREN)
       (token/p 'HOOKEDARROW)
       [es <- expr/p]
+      (token/p 'CLOSEBRACE)
       (pure (list 'ifz e e0 (list 'lam var es))))))
 
 (define fix/p
@@ -85,10 +88,3 @@
 
 (define (parse s)
     (syntax->datum (parse-result! (parse-tokens expr/p (lex s)))))
-
-(parse "z")
-(parse "s(s(z))")
-(parse "λ(x:nat) x")
-(parse "ifz s(z){z=>z|s(x)=>x}")
-(parse "fix y:nat is λ(x:nat) ifz x{z=>z|s(w)=>ap(y, w)}")
-(parse "ap(λ(x:nat) x, z)")

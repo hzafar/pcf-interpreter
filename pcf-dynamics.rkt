@@ -1,11 +1,8 @@
 #lang racket
 
-(require
-  "helpers.rkt"
-  "pcf-common.rkt")
+(require "helpers.rkt")
 
-(provide (all-defined-out)
-         (all-from-out "pcf-common.rkt"))
+(provide (all-defined-out))
 
 ; 19.2a-c
 (define (val? e)
@@ -19,8 +16,8 @@
   (match e
     [(? val? v) v]
     [`(succ ,e) `(succ ,(step e))]
-    [`(ifz z ,e0 ,e1) e0]
-    [`(ifz (succ ,(? val? v)) ,e0 (lam ,x ,b)) (substitute x v b)]
+    [`(ifz z ,e0 e1) e0]
+    [`(ifz (succ ,(? val? v)) e0 (lam ,x ,b)) (substitute x v b)]
     [`(ifz ,e ,e0 ,es) `(ifz ,(step e) ,e0 ,es)]
     [`(ap (lam ,x ,b) ,(? val? arg)) (substitute x arg b)]
     [`(ap ,(? val? fn) ,e) `(ap ,fn ,(step e))]

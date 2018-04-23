@@ -1,4 +1,25 @@
 # PCF Interpreter Reference
+
+## ~~ Needs updating ~~
+Also, things are broken as I clean this up
+
+                             /\
+                            /..\
+                           /....\
+                          --------
+                         /\@@@@@@/\
+                        /..\@@@@/..\
+                       /....\@@/....\
+                      ----------------
+                     /\@@@@@@@@@@@@@@/\
+                    /..\@@@@@@@@@@@@/..\
+                   /....\@@@@@@@@@@/....\
+                  --------@@@@@@@@--------
+                 /\@@@@@@/\@@@@@@/\@@@@@@/\
+                /..\@@@@/..\@@@@/..\@@@@/..\
+               /....\@@/....\@@/....\@@/....\
+              --------------------------------
+
 A Racket-based implementation of the PCF dynamics described in Robert Harper's *Practical Foundations for Programming Languages*.
 
 ### PCF Constructs
