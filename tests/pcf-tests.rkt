@@ -1,7 +1,7 @@
 #lang racket
 
 (require
-  "../pcf.rkt"
+  "../pcf-dynamics.rkt"
   rackunit
   rackunit/log)
 
