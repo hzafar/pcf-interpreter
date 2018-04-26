@@ -3,7 +3,7 @@
 (provide (all-defined-out))
 
 (define (num e)
-  (if (equal? e 'z) 0 (add1 (num (cadr e)))))
+  (if (procedure? e) e (if (equal? e 'z) 0 (add1 (num (cadr e))))))
 
 (define (rename-lam-var lam-expr)
   (let ((new-sym (gensym)))
