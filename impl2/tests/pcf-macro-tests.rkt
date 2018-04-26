@@ -1,7 +1,8 @@
 #lang racket
 
 (require
-  "../pcf-hoas-dynamics.rkt"
+  "../../pcf-dynamics.rkt"
+  "../pcf-macro-forms.rkt"
   rackunit
   rackunit/log)
 

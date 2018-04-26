@@ -28,7 +28,6 @@
         (list-eq? e result))))
 
 (define (evaluate step-fn e [S '()] [F (hash)])
-  (displayln e)
-  (if (not-reducible? step-fn e S F) (begin (displayln "we're done!") e)
+  (if (not-reducible? step-fn e S F) e
       (let-values ([(result S-prime F-prime) (step-fn e S F)])
         (evaluate step-fn result S-prime F-prime))))

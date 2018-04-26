@@ -1,12 +1,13 @@
 #lang racket
 
 (require
+  "../convert.rkt"
   "../parser.rkt"
-  "../pcf-dynamics.rkt"
+  "../../pcf-dynamics.rkt"
   rackunit
   rackunit/log)
 
-(define ev (compose num evaluate parse))
+(define ev (compose num evaluate ast->hoas parse))
 
 (check-equal? (parse "z") 'z)
 (check-equal? (parse "s(z)") '(succ z))
